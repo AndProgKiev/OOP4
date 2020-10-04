@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
 
 public class Groupe implements Voencom{
@@ -25,13 +23,14 @@ public class Groupe implements Voencom{
         }
     }
 
-    public void reader() throws IOException {
+    public void readFromConsole() throws IOException {
          BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
         String name;
         String surname;
         int age;
         String gender;
         int studentId;
+
         try {
         System.out.println("Enter name");
          name= reader.readLine();
@@ -49,6 +48,55 @@ public class Groupe implements Voencom{
     }catch (IOException e){
         System.out.println(e.getMessage());
     }
+
+
+
+    }
+
+    public void readFromFile(String dataBase)throws IOException{
+
+
+        String name;
+        String surname;
+        int age;
+        String gender;
+        int studentId;
+
+            try (BufferedReader reader= new BufferedReader(new FileReader(dataBase))){
+                String line;
+                while ((line=reader.readLine())!=null) {
+
+
+                    String[] element = line.split(";");
+
+                    name = element[0];
+                    surname = element[1];
+                    age = Integer.parseInt(element[2]);
+                    gender = element[3];
+                    studentId = Integer.parseInt(element[4]);
+
+                    addStudent(new Student(name, surname, age, Gender.valueOf(gender), studentId));
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+    }
+
+    public void writeGroupeToFile(String fileName) throws IOException{
+          try (PrintWriter printWriter=new PrintWriter(new File(fileName))) {
+              for (Student student:studentList) {
+                  if (student != null) {
+                      printWriter.println(student.toString());
+                  }
+              }
+
+          }catch (IOException e){
+              e.printStackTrace();
+          }
 
     }
 
