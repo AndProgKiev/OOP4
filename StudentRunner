@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class StudentRunner {
     public static void main(String[] args) throws IOException {
         Groupe groupe=new Groupe();
@@ -8,8 +10,6 @@ public class StudentRunner {
         Student s4=new Student("Alisa", "Lisa",5,Gender.FEMALE,5);
         Student s5=new Student("Kolobok", "Kolobok",19,Gender.FEMALE,56);
 
-
-
         try {
          groupe.addStudent(s1);
          groupe.addStudent(s2);
@@ -19,15 +19,19 @@ public class StudentRunner {
      } catch (MyException e){
          System.err.println(e.getMessage());
      }
-        groupe.reader();
+
+    groupe.readFromFile("C:\\Users\\andy\\IdeaProjects\\Hellow World\\untitled\\src\\HomeOOp\\Students");
 
      System.out.println(groupe.toString());
+
 
      groupe.sortBySurname();
 
         System.out.println(groupe.toString());
-     groupe.sortByStudentID();
+  //   groupe.sortByStudentID();
         System.out.println(groupe.toString());
+
+        groupe.writeGroupeToFile("C:\\Users\\andy\\IdeaProjects\\Hellow World\\untitled\\src\\HomeOOp\\newStudents");
 
         try {
             groupe.findBySurname("biggg").toString();
