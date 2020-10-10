@@ -1,8 +1,9 @@
 import java.io.*;
 import java.util.Arrays;
 
-public class Groupe implements Voencom{
+public class Groupe implements Voencom, Serializable{
     private Student [] studentList=new Student[10];
+    public static final long serialVersionUID=1L;
 
 
     public Student[] getStudentList() {
@@ -50,12 +51,9 @@ public class Groupe implements Voencom{
     }
 
 
-
     }
 
     public void readFromFile(String dataBase)throws IOException{
-
-
         String name;
         String surname;
         int age;
@@ -65,8 +63,6 @@ public class Groupe implements Voencom{
             try (BufferedReader reader= new BufferedReader(new FileReader(dataBase))){
                 String line;
                 while ((line=reader.readLine())!=null) {
-
-
                     String[] element = line.split(";");
 
                     name = element[0];
@@ -85,6 +81,30 @@ public class Groupe implements Voencom{
 
 
     }
+
+    public static Groupe readFromFileSerialization (String path) throws IOException{
+        Groupe groupe=null;
+        try (ObjectInputStream inputStream=new ObjectInputStream(new FileInputStream(path))){
+
+            groupe = (Groupe) inputStream.readObject();
+
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return groupe;
+    }
+
+    public void writeToFileSerialization(String path)throws IOException{
+        try (ObjectOutputStream objectOutputStream=new ObjectOutputStream(new FileOutputStream(path+"\\studentslist"))) {
+            objectOutputStream.writeObject(this);
+
+            System.out.println("Successful write to file");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void writeGroupeToFile(String fileName) throws IOException{
           try (PrintWriter printWriter=new PrintWriter(new File(fileName))) {
@@ -184,4 +204,5 @@ public class Groupe implements Voencom{
                 "studentList=" + students +
                 '}';
     }
+
 }
